@@ -1,10 +1,12 @@
 name: CI
 
 on:
+  # Nhánh feature được kiểm tra qua PR; chỉ chạy theo push trên main để không chạy trùng hai lần
   push:
-    branches: ["**"]
+    branches: [main]
   pull_request:
     branches: [main]
+  workflow_dispatch:
 
 jobs:
   backend:
@@ -38,6 +40,8 @@ jobs:
       DB_NAME: collision_warning_test
       DB_USER: cws_user
       DB_PASSWORD: cws_password
+      # Cho pytest chạy trên MySQL service ở trên thay vì SQLite (xem BE/tests/conftest.py)
+      TEST_DATABASE_URL: mysql+pymysql://cws_user:cws_password@127.0.0.1:3306/collision_warning_test
 
     steps:
       - uses: actions/checkout@v4
@@ -59,9 +63,7 @@ jobs:
           mysql -h 127.0.0.1 -u root -proot collision_warning_test < ../database/init/01_schema.sql
 
       - name: Run tests
-        # exit code 5 = no tests collected (skeleton chưa có test) -> không fail
-        run: |
-          pytest --cov=app --cov-report=term || [ $? -eq 5 ]
+        run: pytest --cov=app --cov-report=term
 
   frontend:
     name: Frontend - build

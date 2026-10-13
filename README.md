@@ -174,8 +174,8 @@ npm run dev                   # http://localhost:5173
 ## ⚙️ CI/CD
 
 ### CI ([.github/workflows/ci.yml](.github/workflows/ci.yml))
-Chạy khi **push lên bất kỳ nhánh nào** hoặc khi **tạo PR vào `main`**:
-1. **Backend:** kiểm tra code bằng `ruff`, tạo bảng trên MySQL test, chạy `pytest`
+Chạy khi **tạo/cập nhật PR vào `main`**, khi code vào `main`, hoặc chạy tay ở tab Actions (Run workflow):
+1. **Backend:** kiểm tra code bằng `ruff`, tạo bảng trên MySQL test, chạy `pytest` trên MySQL đó
 2. **Frontend:** `npm install`, sau đó `npm run build`
 3. **Docker:** build thử image BE và FE
 

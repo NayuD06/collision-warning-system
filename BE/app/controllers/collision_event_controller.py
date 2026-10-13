@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
 
 from app.controllers import alert_controller
-from app.schemas.alert_schema import AlertCreate, AlertLevel
+from app.schemas.alert_schema import AlertCreate, AlertLevel, AlertResponse
 from app.schemas.collision_event_schema import (
     CollisionCheckRequest,
     CollisionCheckResponse,
@@ -41,5 +41,5 @@ def check_collision(db: Session, payload: CollisionCheckRequest) -> CollisionChe
             ttc_seconds=result.ttc_seconds,
         ),
     )
-    response.alert = alert
+    response.alert = AlertResponse.model_validate(alert)
     return response
